@@ -1,0 +1,26 @@
+server:
+  port: 8222
+
+eureka:
+  client:
+    register-with-eureka: false
+
+spring:
+  cloud:
+    gateway:
+      x-forwarded:
+        host-enabled: true
+      mvc:
+        routes:
+          - id: posts
+            uri: http://localhost:8090
+            predicates:
+              - Path=/api/v1/posts/**
+          - id: comments
+            uri: http://localhost:8070
+            predicates:
+              - Path=/api/v1/comments/**
+  application:
+    name: gateway
+  config:
+    import: optional:configserver:http/localhost:8888
