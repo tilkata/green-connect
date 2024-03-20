@@ -22,30 +22,21 @@ on:
 
 jobs:
   build-config-server:
-    if: |
-      contains(github.event.pull_request.paths, 'config-server/') ||
-      contains(github.event.push.paths, 'config-server/') ||
-      github.event_name == 'pull_request' && contains(toJson(github.event.pull_request.paths), 'config-server/')
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'corretto'
-      - name: Build and Deploy Config Server
+      - name: Build and Test Config Server
         run: |
           cd config-server
-          mvn clean install deploy
+          mvn clean install
 
-  build-and-deploy-services:
-    needs: [build-config-server]
-    if: |
-      github.event_name == 'push' ||
-      github.event_name == 'pull_request' ||
-      success()
+  build-and-test-services:
+    needs: build-config-server
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -55,16 +46,16 @@ jobs:
           - comment-service
           - getaway
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'corretto'
-      - name: Build and Deploy Service
+      - name: Build and Test Service
         run: |
           cd ${{ matrix.service }}
-          mvn clean install deploy
+          mvn clean install
+
 
 
