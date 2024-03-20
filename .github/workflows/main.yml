@@ -7,7 +7,7 @@ on:
     paths:
       - 'config-server/**'
       - 'discovery/**'
-      - 'posts-service/**'
+      - 'post-service/**'
       - 'comment-service/**'
       - 'getaway/**'
   pull_request:
@@ -16,7 +16,7 @@ on:
     paths:
       - 'config-server/**'
       - 'discovery/**'
-      - 'posts-service/**'
+      - 'post-service/**'
       - 'comment-service/**'
       - 'getaway/**'
 
