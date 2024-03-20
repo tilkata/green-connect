@@ -22,7 +22,10 @@ on:
 
 jobs:
   build-config-server:
-    if: contains(github.event.pull_request.paths, 'config-server/') || contains(github.event.push.paths, 'config-server/')
+    if: |
+      contains(github.event.pull_request.paths, 'config-server/') ||
+      contains(github.event.push.paths, 'config-server/') ||
+      github.event_name == 'pull_request' && contains(toJson(github.event.pull_request.paths), 'config-server/')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -38,7 +41,11 @@ jobs:
           mvn clean install deploy
 
   build-and-deploy-services:
-    needs: build-config-server
+    needs: [build-config-server]
+    if: |
+      github.event_name == 'push' ||
+      github.event_name == 'pull_request' ||
+      success()
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -55,8 +62,9 @@ jobs:
         with:
           java-version: '17'
           distribution: 'corretto'
-      - name: Build Service
+      - name: Build and Deploy Service
         run: |
           cd ${{ matrix.service }}
           mvn clean install deploy
+
 
