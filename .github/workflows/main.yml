@@ -33,7 +33,7 @@ jobs:
       - name: Build and Test Config Server
         run: |
           cd config-server
-          mvn clean install
+          mvn -B package --file pom.xml
 
   build-and-test-services:
     needs: build-config-server
@@ -55,7 +55,7 @@ jobs:
       - name: Build and Test Service
         run: |
           cd ${{ matrix.service }}
-          mvn clean install
+          mvn -B package --file pom.xml
 
 
 
