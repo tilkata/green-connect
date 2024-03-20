@@ -1,0 +1,45 @@
+name: GreenConnect Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  configuration:
+    name: Build Config Service
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Config Service
+        run: |
+          cd config-server
+          ./.github/workflows/build.yml  
+
+  run_dependent:
+    name: Run Dependent Services
+    runs-on: ubuntu-latest
+    needs: configuration
+    strategy:
+      matrix:
+        service:
+          - discovery
+          - posts-service
+          - comment-service
+          - getaway
+          - config-server
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Service Pipeline
+        run: |
+          cd ${{ matrix.service }}
+          ./.github/workflows/main.yml
