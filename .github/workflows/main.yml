@@ -42,7 +42,7 @@ jobs:
       matrix:
         service:
           - discovery
-          - posts-service
+          - post-service
           - comment-service
           - getaway
     steps:
