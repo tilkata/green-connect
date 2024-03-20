@@ -21,6 +21,6 @@ public class Comment {
     private String thread_id;
     private Integer postId;
     private String text;
-    //image
+    private String test;
 
 }
