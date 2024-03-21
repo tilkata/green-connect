@@ -21,5 +21,4 @@ public class Comment {
     private String thread_id;
     private Integer postId;
     private String text;
-    private String test;
 }
