@@ -20,5 +20,5 @@ public class Comment {
     private String user_id;
     private String thread_id;
     private Integer postId;
-
+    private String text;
 }
