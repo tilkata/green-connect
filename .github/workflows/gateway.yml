@@ -1,9 +1,16 @@
 name: API Gateway Service CI/CD
 
 on:
-  workflow_call:
+  push:
     branches:
       - main
+    paths:
+      - 'gateway/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'gateway/**'
 
 jobs:
   build-and-test:

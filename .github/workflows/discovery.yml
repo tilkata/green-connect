@@ -1,9 +1,16 @@
 name: Discovery Service CI/CD
 
 on:
-  workflow_call:
+  push:
     branches:
       - main
+    paths:
+      - 'discovery/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'discovery/**'
 
 jobs:
   build-and-test:

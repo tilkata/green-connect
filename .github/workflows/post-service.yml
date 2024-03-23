@@ -1,9 +1,16 @@
 name: Post Service CI/CD
 
 on:
-  workflow_call:
+  push:
     branches:
       - main
+    paths:
+      - 'post-service/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'post-service/**'
 
 jobs:
   build-and-test:
