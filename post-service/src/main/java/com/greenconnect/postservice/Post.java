@@ -20,6 +20,7 @@ public class Post {
     private String user_id;
     private String thread_id;
     private String text;
+    private String test;
     //image
 
 }
