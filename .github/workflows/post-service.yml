@@ -1,0 +1,19 @@
+name: Post Service CI/CD
+
+on:
+  workflow_call:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and Test for Post Service
+        run: |
+          echo "Building and testing Post Service..."
+          cd post-service
+          mvn -B package --file pom.xml
+
