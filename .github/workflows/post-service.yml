@@ -48,4 +48,32 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.POST_SVC_SONAR_TOKEN }}
+  Create-publish-image-to-dockerhub:
+    needs: [ sonar-cloud-analyze ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Building an image
+        run: |
+          cd post-service
+          docker build -t post-service .
+      - name: Tag the image
+        run: |
+          docker tag post-service:latest ${{ secrets.DOCKER_USERNAME }}/green-connect:post-service-latest
+      - name: Push the image to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/green-connect:post-service-latest
+          
+        
+    
 
