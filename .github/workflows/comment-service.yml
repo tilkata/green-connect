@@ -44,7 +44,7 @@ jobs:
       - name: SonarCloud Analysis
         run: |
           cd comment-service
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=tilkata_green-connect
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=com.greenconnect:comment-service
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.COMMENT_SVC_SONAR_TOKEN }}
