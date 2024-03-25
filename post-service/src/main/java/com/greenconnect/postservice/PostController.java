@@ -24,6 +24,19 @@ public class PostController {
     public ResponseEntity<List<Post>> findAllPosts(){
         return ResponseEntity.ok(service.findAllPosts());
     }
+
+    @PutMapping("/{post-id}")
+    public ResponseEntity<Void> updatePost(@PathVariable("post-id") Integer postId, @RequestBody Post post) {
+        post.setId(postId);
+        service.updatePost(post);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{post-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePost(@PathVariable("post-id") Integer postId) {
+        service.deletePost(postId);
+    }
     @GetMapping("/with-comments/{post-id}")
     public ResponseEntity<FullPostResponse> findAllPosts(
             @PathVariable("post-id") Integer postId
