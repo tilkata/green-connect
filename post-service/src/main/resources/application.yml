@@ -3,3 +3,10 @@ spring:
     name: posts
   config:
     import: optional:configserver:http://localhost:8888
+rabbitmq:
+  queue:
+    name: "post-service"
+  exchange:
+    name: "post-service-exchange"
+  routing:
+    key: "post-service-routing"

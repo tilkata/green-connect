@@ -1,5 +1,6 @@
 package com.greenconnect.postservice;
 
+//import com.greenconnect.postservice.publisher.RabbitMQProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,8 @@ import java.util.List;
 @RequestMapping("/api/v1/posts")
 @RequiredArgsConstructor
 public class PostController {
+
+//    private final RabbitMQProducer producer;
 
     private final PostService service;
     @PostMapping
@@ -43,4 +46,11 @@ public class PostController {
     ){
         return ResponseEntity.ok(service.findPostsWithComments(postId));
     }
+
+    @GetMapping("/publish")
+    public ResponseEntity<String> sendMessage(@RequestParam("message") String message){
+//        producer.sendMessage(message);
+        return ResponseEntity.ok("Message sent");
+    }
+
 }
