@@ -10,3 +10,8 @@ rabbitmq:
     name: "post-service-exchange"
   routing:
     key: "post-service-routing"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
