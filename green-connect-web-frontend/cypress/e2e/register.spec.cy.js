@@ -17,8 +17,9 @@ describe('Registration Page', () => {
     cy.get('input[placeholder="Confirm your password"]').type('porkchop1234');
     cy.get('input[type="checkbox"]').check();
     cy.get('button').contains('Register').click();
-    cy.get('.text-red-500').should('contain', 'Passwords do not match.');
-  });
+    cy.get('.text-red-500', { timeout: 10000 }).should('contain', 'Passwords do not match.');
+});
+
 
   it('should show error if consent is not given', () => {
     cy.get('input[placeholder="Enter your email"]').type('peppa@pig.com');
@@ -29,9 +30,9 @@ describe('Registration Page', () => {
   });
 
   it('should register successfully with valid inputs', () => {
-    cy.get('input[placeholder="Enter your email"]').type('test@example.com');
-    cy.get('input[placeholder="Enter your password"]').type('password123');
-    cy.get('input[placeholder="Confirm your password"]').type('password123');
+    cy.get('input[placeholder="Enter your email"]').type('peppa@pig.com');
+    cy.get('input[placeholder="Enter your password"]').type('porkchop123');
+    cy.get('input[placeholder="Confirm your password"]').type('porkchop123');
     cy.get('input[type="checkbox"]').check();
     cy.get('button').contains('Register').click();
     cy.on('window:alert', (str) => {

@@ -1,7 +1,7 @@
 version: '3'
 services:
   app:
-    image: post-service:latest
+    image: comment-service:latest
     ports:
       - "5000:5000"
     depends_on:
@@ -49,6 +49,3 @@ services:
 
 volumes:
   db-data:
-
-
-
