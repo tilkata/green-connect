@@ -5,7 +5,7 @@ import com.greenconnect.postservice.model.Post;
 
 import java.util.List;
 
-public interface PostService {
+public interface IPostService {
     List<Post> findAllPosts(int page, int size);
     List<Post> findPostsByCategory(String category, int page, int size);
     Post getPostById(Long postId);

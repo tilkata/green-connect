@@ -7,7 +7,17 @@ eureka:
 
 server:
   port: 8090
+azure:
+  blob-storage:
+    connection-string: DefaultEndpointsProtocol=https;AccountName=greenconnect;AccountKey=Y92zovdbvW55VAiDX0lZV532MCQm5jT8Gy9vqkuWqFEpa3kPMS4wcRt0Ryz6ZIGiPiNjETrvEg1z+AStJOoOaQ==;BlobEndpoint=https://greenconnect.blob.core.windows.net/;QueueEndpoint=https://greenconnect.queue.core.windows.net/;TableEndpoint=https://greenconnect.table.core.windows.net/;FileEndpoint=https://greenconnect.file.core.windows.net/;
+
 spring:
+  cloud:
+    azure:
+      storage:
+        blob:
+          container-name: images
+
   rabbitmq:
     host: localhost
     port: 5672
@@ -25,7 +35,3 @@ spring:
       ddl-auto: create
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-
-#application:
-#  config:
-#    comments-url: http://localhost:8070/api/v1/comments
