@@ -1,9 +1,11 @@
-package com.greenconnect.postservice.service;
+package com.greenconnect.postservice.service.impl;
 
 import com.greenconnect.postservice.dto.PostDTO;
 import com.greenconnect.postservice.model.*;
 import com.greenconnect.postservice.repo.LikeRepository;
 import com.greenconnect.postservice.repo.PostRepository;
+import com.greenconnect.postservice.service.FileStorageService;
+import com.greenconnect.postservice.service.PostService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

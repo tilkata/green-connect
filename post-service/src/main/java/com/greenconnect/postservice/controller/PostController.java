@@ -2,7 +2,7 @@ package com.greenconnect.postservice.controller;
 
 import com.greenconnect.postservice.dto.PostDTO;
 import com.greenconnect.postservice.model.Post;
-import com.greenconnect.postservice.service.PostServiceImpl;
+import com.greenconnect.postservice.service.impl.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
