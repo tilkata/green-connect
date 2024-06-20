@@ -26,7 +26,7 @@ jobs:
       - name: Build and Test for User Service
         run: |
           echo "Building and testing User Service..."
-          cd post-service
+          cd user-service
           mvn -B package --file pom.xml
 
 
