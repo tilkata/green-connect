@@ -10,7 +10,7 @@ server:
 azure:
   blob-storage:
     connection-string:
-
+      
 spring:
   cloud:
     azure:
