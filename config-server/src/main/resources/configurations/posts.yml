@@ -7,6 +7,10 @@ eureka:
 
 server:
   port: 8090
+azure:
+  blob-storage:
+    connection-string:
+
 spring:
   rabbitmq:
     host: localhost
@@ -22,7 +26,7 @@ spring:
     password: postgres
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
