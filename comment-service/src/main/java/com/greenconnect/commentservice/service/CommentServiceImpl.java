@@ -65,4 +65,16 @@ public class CommentServiceImpl implements CommentService {
         }
         commentRepository.delete(comment);
     }
+
+    @Override
+    public void deleteCommentsByPostId(Long postId) {
+        commentRepository.deleteByPostId(postId);
+        System.out.println("Deleted comments for post: " + postId);
+    }
+
+    @Override
+    public void deleteCommentsByAuthorId(Long userId) {
+        commentRepository.deleteByAuthorId(userId);
+        System.out.println("Comments deleted for user: " + userId);
+    }
 }

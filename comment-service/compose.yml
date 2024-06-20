@@ -1,51 +1,45 @@
-version: '3'
+version: '3.9'
 services:
-  app:
+  comment_service_db:
+    container_name: comment_service_db
+    image: postgres:latest
+    volumes:
+      - comment_service_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: comments
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - shared_network
+      - comment_service_network
+
+  comment_service:
+    container_name: comment_service
     image: comment-service:latest
     ports:
       - "5000:5000"
-    depends_on:
-      - db
-      - rabbitmq
-
-  prometheus:
-    container_name: prometheus
-    image: prom/prometheus
-    restart: always
-    extra_hosts:
-      - host.docker.internal:host-gateway
-    command:
-      - --config.file=/etc/prometheus/prometheus.yml
-    volumes:
-      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-
-  grafana:
-    container_name: grafana
-    image: grafana/grafana
-    ports:
-      - "3000:3000"
-
-  db:
-    container_name: postgres
-    image: postgres:latest
-    volumes:
-      - db-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: posts
+      POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: comments
+      SPRING_DATASOURCE_URL: jdbc:postgresql://comment_service_db:5432/comments
+    depends_on:
+      comment_service_db:
+        condition: service_healthy
+    networks:
+      - shared_network
+      - comment_service_network
 
-  rabbitmq:
-    image: rabbitmq:3.12.1-management
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
-
+networks:
+  shared_network:
+    external: true
+  comment_service_network:
+    driver: bridge
 
 volumes:
-  db-data:
+  comment_service_data:

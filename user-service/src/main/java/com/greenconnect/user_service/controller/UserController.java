@@ -1,5 +1,6 @@
 package com.greenconnect.user_service.controller;
 
+import com.greenconnect.user_service.config.rabittmq.UserProducer;
 import com.greenconnect.user_service.dto.UserDTO;
 import com.greenconnect.user_service.service.UserService;
 import jakarta.validation.Valid;
@@ -11,10 +12,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserProducer userProducer;
 
     @PostMapping
     public UserDTO createUser(@Valid @RequestBody UserDTO userDTO) {
@@ -39,6 +43,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+        userProducer.sendUserDeletedMessage(id);
     }
 
     @GetMapping("/{id}/data")

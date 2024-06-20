@@ -9,4 +9,6 @@ import org.springframework.data.domain.Pageable;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     Page<Comment> findByPostId(Long postId, Pageable pageable);
     List<Comment> findByParentId(Long parentId);
+    void deleteByPostId(Long postId);
+    void deleteByAuthorId(Long authorId);
 }

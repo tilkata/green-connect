@@ -1,4 +1,4 @@
-package com.greenconnect.postservice.model;
+package com.greenconnect.postservice.model.Content;
 
 import jakarta.persistence.*;
 import lombok.Getter;

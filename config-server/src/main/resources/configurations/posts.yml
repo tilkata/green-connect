@@ -12,6 +12,12 @@ azure:
     connection-string:
 
 spring:
+  cloud:
+    azure:
+      storage:
+        blob:
+          container-name: images
+
   rabbitmq:
     host: localhost
     port: 5672
@@ -29,7 +35,3 @@ spring:
       ddl-auto: update
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-
-#application:
-#  config:
-#    comments-url: http://localhost:8070/api/v1/comments

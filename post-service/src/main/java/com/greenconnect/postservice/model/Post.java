@@ -14,9 +14,11 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "content_id", referencedColumnName = "id")
-    private Content content;
+    @Column(name = "content_identifier")
+    private String contentIdentifier;
+
+    @Column(name ="content_text")
+    private String contentText;
 
     @Column(name = "author_id")
     private Long authorId;
@@ -46,7 +48,5 @@ public class Post {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-
-    // Getters and Setters...
 }
 
