@@ -9,8 +9,8 @@ server:
   port: 8090
 azure:
   blob-storage:
-    connection-string:
-      
+    connection-string: DefaultEndpointsProtocol=https;AccountName=greenconnect;AccountKey=Y92zovdbvW55VAiDX0lZV532MCQm5jT8Gy9vqkuWqFEpa3kPMS4wcRt0Ryz6ZIGiPiNjETrvEg1z+AStJOoOaQ==;BlobEndpoint=https://greenconnect.blob.core.windows.net/;QueueEndpoint=https://greenconnect.queue.core.windows.net/;TableEndpoint=https://greenconnect.table.core.windows.net/;FileEndpoint=https://greenconnect.file.core.windows.net/;
+
 spring:
   cloud:
     azure:
