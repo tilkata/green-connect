@@ -20,7 +20,7 @@ public class UserService {
 
     @Autowired
     private UserRepo userRepository;
-    
+
     public UserDTO createUser(@Valid UserDTO userDTO) {
         User user = UserMapper.toUser(userDTO);
         user.setPassword(PasswordUtil.hashPassword(user.getPassword()));
