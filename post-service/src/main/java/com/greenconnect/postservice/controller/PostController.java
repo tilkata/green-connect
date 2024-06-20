@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/posts")
 public class PostController {
 
@@ -50,13 +51,14 @@ public class PostController {
         Post createdPost = postService.createPost(postDTO, userId);
         return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
     }
+
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/upload")
     public ResponseEntity<Post> createPost(
             @RequestParam("postDTO") String postDTOStr,
             @RequestParam Long userId,
             @RequestParam MultipartFile file) throws IOException {
 
-        // Convert postDTOStr (JSON String) to PostDTO object
         ObjectMapper objectMapper = new ObjectMapper();
         PostDTO postDTO = objectMapper.readValue(postDTOStr, PostDTO.class);
 
@@ -70,6 +72,11 @@ public class PostController {
         return new ResponseEntity<>(updatedPost, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{authorId}")
+    public ResponseEntity<Void> deletePostByAuthorId(@PathVariable Long authorId) {
+        postService.deleteAllPosts(authorId);
+        return new ResponseEntity<>(HttpStatus.GONE);
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id, @RequestParam Long userId) {
         postService.deletePost(id, userId);
@@ -87,4 +94,10 @@ public class PostController {
         postService.unlikePost(id, userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/{userId}")
+    public List<Post> getPostsByUserId(@PathVariable Long userId) {
+        return postService.findPostsByUserId(userId);
+    }
+
 }

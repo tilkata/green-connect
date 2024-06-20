@@ -1,5 +1,23 @@
+
 spring:
   application:
    name: comments
   config:
     import: optional:configserver:http://localhost:8888
+  rabbitmq:
+   port: 5672
+   username: guest
+   password: guest
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/comments
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+server:
+    port: 8070
+

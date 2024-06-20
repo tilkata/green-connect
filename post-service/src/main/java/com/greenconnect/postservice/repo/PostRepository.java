@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByCategory(String category, Pageable pageable);
+    List<Post> findAllByAuthorId(Long authorId);
+    void deleteAllByAuthorId(Long authorId);
 }

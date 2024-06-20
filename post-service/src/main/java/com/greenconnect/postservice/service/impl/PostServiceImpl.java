@@ -3,6 +3,7 @@ package com.greenconnect.postservice.service.impl;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.greenconnect.postservice.config.rabbitmq.PostProducer;
 import com.greenconnect.postservice.dto.PostDTO;
 import com.greenconnect.postservice.mapper.PostMapper;
 import com.greenconnect.postservice.model.*;
@@ -31,32 +32,10 @@ public class PostServiceImpl implements IPostService {
 
     @Autowired
     private final LikeRepository likeRepository;
-
-    @Value("${spring.cloud.azure.storage.blob.container-name}")
-    private String containerName;
-
-    @Value("${azure.blob-storage.connection-string}")
-    private String connectionString;
-
-    private BlobServiceClient blobServiceClient;
-    @PostConstruct
-    public void init() {
-        blobServiceClient = new BlobServiceClientBuilder()
-                .connectionString(connectionString)
-                .buildClient();
-    }
-
-    //Method from the video
-    public String uploadPostContent(MultipartFile file,Long userId) throws IOException {
-        String fileName = file.getOriginalFilename() +'/'+userId;
-        BlobClient blobClient = blobServiceClient
-                .getBlobContainerClient(containerName)
-                .getBlobClient(fileName);
-
-        blobClient.upload(file.getInputStream(),file.getSize(),true);
-
-        return blobClient.getBlobUrl();
-    }
+    @Autowired
+    private final AzureBlobStorageService azureBlobStorageService;
+    @Autowired
+    private PostProducer postProducer;
 
     @Override
     public List<Post> findAllPosts(int page, int size) {
@@ -86,7 +65,7 @@ public class PostServiceImpl implements IPostService {
     public Post createPost(PostDTO postDTO, Long userId,MultipartFile file) throws IOException {
         Post post = PostMapper.toPost(postDTO);
         post.setAuthorId(userId);
-        post.setContentIdentifier(uploadPostContent(file,userId));
+        post.setContentIdentifier(azureBlobStorageService.uploadPostContent(file, userId));
 
         return postRepository.save(post);
     }
@@ -110,11 +89,13 @@ public class PostServiceImpl implements IPostService {
     public void deletePost(Long postId, Long userId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Post not found"));
         if (!post.getAuthorId().equals(userId)) {
+
             throw new SecurityException("Unauthorized attempt to delete a post");
         }
         // Delete all likes associated with this post
         //likeRepository.deleteByPostId(postId);
         postRepository.delete(post);
+        postProducer.sendPostDeletedMessage(postId);
     }
 
     @Override
@@ -134,5 +115,21 @@ public class PostServiceImpl implements IPostService {
         Like like = likeRepository.findByPostIdAndUserId(postId, userId)
                 .orElseThrow(() -> new IllegalArgumentException("Like not found"));
         likeRepository.delete(like);
+    }
+
+    @Transactional
+    public void deleteAllPosts(Long userId) {
+        List<Post> posts = postRepository.findAllByAuthorId(userId);
+        for (Post post : posts) {
+            // Ensure each post is deleted and related comments are processed
+            postProducer.sendPostDeletedMessage(post.getId());
+        }
+//         Finally, delete all posts by author ID
+        postRepository.deleteAll(posts);
+        azureBlobStorageService.deleteAllFilesByUserId(userId);
+    }
+
+    public List<Post> findPostsByUserId(Long userId) {
+        return postRepository.findAllByAuthorId(userId);
     }
 }

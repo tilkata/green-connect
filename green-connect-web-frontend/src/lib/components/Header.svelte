@@ -14,6 +14,7 @@
     <a class="btn btn-ghost text-white" href="/">Home</a>
     <a class="btn btn-ghost text-white" href="/login">Login</a>
     <a class="btn btn-ghost text-white" href="/register">Register</a>
+    <a class="btn btn-ghost text-white" href="/panel">Panel</a>
     <a class="btn btn-ghost text-white" href="/userDetails">Details</a>
     <a class="btn btn-ghost text-white" href="/privacy-policy">Privacy Policy</a>
     <a class="btn btn-ghost text-white" href="/feed">Feed</a>
